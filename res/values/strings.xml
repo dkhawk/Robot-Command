@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OrbotixStickDrive</string>
+    <string name="lost_control">The robot has lost control.</string>
+    <string name="drive_setup_progress_title">Prepare</string>
+    <string name="drive_setup_progress_message">Preparing robot.</string>
+    <string name="drive_failed_to_setup">Failed to setup</string>
+</resources>

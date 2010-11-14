@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="#fff" android:layout_height="match_parent"
+	android:layout_width="match_parent">
+
+
+	<Button android:id="@+id/StopButton" android:background="@drawable/full_stop"
+		android:layout_height="64dp" android:layout_width="64dp"
+		android:layout_below="@+id/LeftMotorSeekBar"
+		android:layout_alignParentRight="true" android:layout_marginRight="50dp"
+		android:layout_marginTop="175dp" />
+	<SeekBar android:layout_height="wrap_content" android:id="@+id/RightMotorSeekBar"
+		android:scrollbarAlwaysDrawVerticalTrack="true"
+		android:scrollbarAlwaysDrawHorizontalTrack="false"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="false" android:layout_width="match_parent"
+		android:layout_marginRight="20dp" android:layout_marginLeft="20dp"
+		android:max="200" android:layout_marginBottom="20dp" android:progress="100" />
+	<Button android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:id="@+id/QuitButton"
+		android:background="@drawable/end_game" android:layout_toRightOf="@+id/LeftMotorSeekBar"
+		android:layout_alignParentLeft="true" android:layout_below="@+id/LeftMotorSeekBar"
+		android:layout_marginTop="20dp" android:layout_marginLeft="50dp"/>
+	<SeekBar android:layout_height="wrap_content" android:id="@+id/LeftMotorSeekBar"
+		android:layout_alignParentTop="true" android:layout_width="match_parent"
+		android:layout_marginLeft="20dp" android:layout_marginRight="20dp"
+		android:max="200" android:layout_marginTop="20dp" android:progress="100"/>
+	<ImageView android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:id="@+id/LogoImageView"
+		android:layout_marginBottom="10dp" android:layout_marginRight="10dp"
+		android:layout_alignParentLeft="true" android:layout_above="@+id/RightMotorSeekBar"
+		android:src="@drawable/orbotix_rot"/>
+
+
+</RelativeLayout>

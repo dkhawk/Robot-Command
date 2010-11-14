@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="horizontal" android:background="#fff">
+
+
+	<Button android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/FindRobotButton"
+		android:layout_gravity="center_horizontal"
+		android:layout_centerHorizontal="true" android:background="@drawable/findadevice"
+		android:layout_marginTop="10dp"></Button>
+	<Button android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/DriveButton"
+		android:layout_gravity="right" android:background="@drawable/playbuttondisabled"
+		android:layout_below="@+id/FindRobotButton"
+		android:layout_alignParentRight="true" android:layout_marginRight="10dp"></Button>
+	<ImageView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:id="@+id/LogoImageView"
+		android:src="@drawable/orbotix" android:layout_below="@+id/DriveButton"
+		android:layout_marginBottom="10dp" android:layout_marginLeft="10dp"></ImageView>
+
+	<ImageView android:id="@+id/splashscreen"
+		android:layout_height="fill_parent" android:src="@drawable/orbotix_balls"
+		android:layout_width="fill_parent" android:layout_gravity="fill"
+		android:visibility="visible"></ImageView>
+
+
+</RelativeLayout>
