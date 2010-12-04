@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="orbotix.sample.stickdrive" android:versionCode="1" android:versionName="1.0">
+	package="com.sphericalchickens.dragbot" android:versionCode="1" android:versionName="1.0">
 	<application android:icon="@drawable/icon" 
 	  android:label="@string/app_name" 
 	  android:debuggable="true">
@@ -22,7 +22,7 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
-	</application>
+</application>
 
 
 <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>

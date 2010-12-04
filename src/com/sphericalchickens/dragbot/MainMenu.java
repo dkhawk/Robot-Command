@@ -1,6 +1,6 @@
-package orbotix.sample.stickdrive;
+package com.sphericalchickens.dragbot;
 
-import orbotix.sample.stickdrive.R;
+import com.sphericalchickens.dragbot.R;
 import orbotix.robot.IGameControl;
 import android.app.Activity;
 import android.content.ComponentName;
