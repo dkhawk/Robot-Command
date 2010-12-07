@@ -1,6 +1,5 @@
 package com.sphericalchickens.dragbot;
 
-import com.sphericalchickens.dragbot.R;
 import orbotix.robot.IGameControl;
 import orbotix.robot.IOrbotixServiceCallback;
 import android.app.Activity;
@@ -34,19 +33,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 
 public class DriveActivity extends Activity {
 	private static final String LOG_TAG = "DriveActivity";
 	private final Boolean DEBUG = true;
-	private final static boolean EMULATOR = false;
+	
+	// If true, do not attempt to connect to the robot service.
+	private final static boolean EMULATOR = true;
 
 	private IGameControl gameControl;
 
@@ -163,6 +160,7 @@ public class DriveActivity extends Activity {
 	}
 
 	private class PlayAreaView extends View {
+
 		private GestureDetector gestures;
 		private Matrix translate;
 		private Bitmap droid;
@@ -174,24 +172,21 @@ public class DriveActivity extends Activity {
 					new GestureListener(this));
 			droid = BitmapFactory.decodeResource(getResources(),
 					R.drawable.droid_g);
-			center_y = this.getHeight() / 2;
-			center_x = this.getWidth() / 2;
-			icon_offset_y = droid.getHeight() / 2;
-			icon_offset_x = droid.getWidth() / 2;
 		}
 
+		@Override
+		protected void onSizeChanged(int width, int height, int oldw, int oldh) {
+			// TODO Auto-generated method stub
+			super.onSizeChanged(width, height, oldw, oldh);
+			center_y = height / 2;
+			center_x = width / 2;
+			icon_offset_y = droid.getHeight() / 2;
+			icon_offset_x = droid.getWidth() / 2;
+			translate.setTranslate(center_x - icon_offset_x, center_y - icon_offset_y);
+			max_dim = Math.max(width, height);
+		}
+				
 		protected void onDraw(Canvas canvas) {
-			if (center_y == 0 || center_x == 0) {
-				center_y = canvas.getHeight() / 2;
-				center_x = canvas.getWidth() / 2;
-				icon_offset_y = droid.getHeight() / 2;
-				icon_offset_x = droid.getWidth() / 2;
-				translate.setTranslate(center_x - icon_offset_x, center_y
-						- icon_offset_y);
-				max_dim = (canvas.getHeight() > canvas.getWidth()) ? canvas
-						.getHeight() : canvas.getWidth();
-			}
-
 			Matrix m = canvas.getMatrix();
 
 			// Draw a circle around the center.
@@ -223,6 +218,16 @@ public class DriveActivity extends Activity {
 			textLocation += 20;
 			canvas.drawText("" + velocity, 0, textLocation, paint);
 			textLocation += 20;
+
+			// Show speed indicators for the left and right motors
+			float bottom;
+			float top;
+			
+			bottom = center_y;
+			top = center_y - (100 * speedLeft);
+			canvas.drawRect(0, top, 5, bottom, paint);
+			top = center_y - (100 * speedRight);
+			canvas.drawRect(getWidth() - 5, top, getWidth(), bottom, paint);
 
 			canvas.drawBitmap(droid, translate, null);
 		}
@@ -283,8 +288,7 @@ public class DriveActivity extends Activity {
 
 		public void onResetLocation() {
 			translate.reset();
-			translate.setTranslate(center_x - icon_offset_x, center_y
-					- icon_offset_y);
+			translate.setTranslate(center_x - icon_offset_x, center_y - icon_offset_y);
 			invalidate();
 		}
 	}
