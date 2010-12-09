@@ -16,8 +16,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -222,13 +225,37 @@ public class DriveActivity extends Activity {
 			// Show speed indicators for the left and right motors
 			float bottom;
 			float top;
-			
+						
 			bottom = center_y;
 			top = center_y - (100 * speedLeft);
 			canvas.drawRect(0, top, 5, bottom, paint);
 			top = center_y - (100 * speedRight);
-			canvas.drawRect(getWidth() - 5, top, getWidth(), bottom, paint);
+			canvas.drawRect(getWidth() - 5 - 1, top, getWidth() - 1, bottom, paint);
 
+			// LinearGradient
+			int w = getWidth();
+		    int h = getHeight();
+			Paint p = new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
+			Path pth = new Path();
+			pth.moveTo(w*0.27f,0);
+		    pth.lineTo(w*0.73f,0);
+		    pth.lineTo(w*0.92f,h);
+		    pth.lineTo(w*0.08f,h);
+		    pth.lineTo(w*0.27f,0);
+		    p.setColor(0xff800000);
+		    p.setShader(new LinearGradient(0,0,0,h,0xff000000,0xffffffff,Shader.TileMode.CLAMP));
+		    canvas.drawPath(pth,p);
+			
+			// Speed gauge outline
+			Paint gaugeBorder = new Paint();
+			gaugeBorder.setColor(Color.LTGRAY);
+			gaugeBorder.setStyle(Paint.Style.STROKE);
+			canvas.drawRect(0, center_y - 100, 5, center_y + 100, gaugeBorder);
+			canvas.drawRect(getWidth() - 5 - 1, center_y - 100, getWidth() - 1, center_y + 100, 
+					gaugeBorder);
+			canvas.drawLine(0, center_y, 5, center_y, gaugeBorder);
+			canvas.drawLine(getWidth() - 5 - 1, center_y, getWidth() - 1, center_y, gaugeBorder);
+			
 			canvas.drawBitmap(droid, translate, null);
 		}
 
