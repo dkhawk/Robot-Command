@@ -203,8 +203,10 @@ public class DriveActivity extends Activity {
 			float y_offset = mtx[Matrix.MTRANS_Y];
 
 			if (!bowling) {
-				calculateVelocityVector(x_offset, y_offset);
+				// calculateVelocityVector(x_offset, y_offset);
 			}
+			
+			newCalculateVelocityVector(x_offset, y_offset);
 
 			Paint paint = new Paint();
 			paint.setColor(Color.BLUE);
@@ -296,6 +298,33 @@ public class DriveActivity extends Activity {
 			}
 			
 			canvas.drawBitmap(droid, translate, null);
+		}
+
+		private void newCalculateVelocityVector(float x, float y) {
+			float x_offset = center_x - x - icon_offset_x;
+			float y_offset = center_y - y - icon_offset_y;
+			
+			Log.d(DEBUG_TAG, "Scale: " + x_offset + ", " + y_offset);
+			angle = Math.atan2(y_offset, x_offset);
+			angle -= Math.PI / 4.0;
+			Log.d(DEBUG_TAG, "Angle: " + angle);
+
+			double angle_degrees = angle / Math.PI * 180;
+			Log.d(DEBUG_TAG, "Angle degrees: " + angle_degrees);
+
+			velocity = Math.sqrt(x_offset * x_offset + y_offset * y_offset);
+			Log.d(DEBUG_TAG, "Velocity: " + velocity);
+
+			new_leftSpeed = (float) (velocity * Math.sin(angle));
+			new_rightSpeed = (float) (velocity * Math.cos(angle));
+			
+			new_leftSpeed /= 100;
+			new_rightSpeed /= 100;
+			
+			Log.d(DEBUG_TAG, "left: " + new_leftSpeed);
+			Log.d(DEBUG_TAG, "right: " + new_rightSpeed);
+
+			setSpeed(new_leftSpeed, new_rightSpeed);
 		}
 
 		@Override
