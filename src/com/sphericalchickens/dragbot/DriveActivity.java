@@ -220,16 +220,13 @@ public class DriveActivity extends Activity {
 				textLocation += 20;
 			}
 
-			String speedText = "" + speedLeft + ", " + speedRight;
-			canvas.drawText(speedText, 0, textLocation, paint);
-			textLocation += 20;
-			canvas.drawText("" + velocity, 0, textLocation, paint);
-			textLocation += 20;
-
-			// Show speed indicators for the left and right motors
-			float bottom;
-			float top;				
-
+			// This renders the motor speeds on the background.
+//			String speedText = "" + speedLeft + ", " + speedRight;
+//			canvas.drawText(speedText, 0, textLocation, paint);
+//			textLocation += 20;
+//			canvas.drawText("" + velocity, 0, textLocation, paint);
+//			textLocation += 20;
+			
 			// LinearGradient  Cool bowling alley effect.
 //			int w = getWidth();
 //		    int h = getHeight();
@@ -243,27 +240,15 @@ public class DriveActivity extends Activity {
 //		    p.setColor(0xff800000);
 //		    p.setShader(new LinearGradient(0,0,0,h,0xff000000,0xffffffff,Shader.TileMode.CLAMP));
 //		    canvas.drawPath(pth,p);
-			
-			Paint gaugeGradient = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-			gaugeGradient.setColor(0xff800000);
-			gaugeGradient.setShader(new LinearGradient(0, center_y, 5, center_y - 100, Color.GREEN, Color.RED, Shader.TileMode.CLAMP));
-			canvas.drawRect(getWidth() - 5 - 1, center_y - 100, getWidth() - 1, center_y, gaugeGradient);
-			canvas.drawRect(1, center_y - 100, 5, center_y, gaugeGradient);
-			gaugeGradient.setShader(new LinearGradient(0, center_y + 100, 5, center_y, Color.RED, Color.GREEN, Shader.TileMode.CLAMP));
-			canvas.drawRect(getWidth() - 5 - 1, center_y + 100, getWidth() - 1, center_y, gaugeGradient);
-			canvas.drawRect(1, center_y + 100, 5, center_y, gaugeGradient);
-			
-			// Speed gauge outline
-			Paint gaugeBorder = new Paint();
-			gaugeBorder.setColor(Color.LTGRAY);
-			gaugeBorder.setStyle(Paint.Style.STROKE);
-			canvas.drawRect(0, center_y - 100, 5, center_y + 100, gaugeBorder);
-			canvas.drawRect(getWidth() - 5 - 1, center_y - 100, getWidth() - 1, center_y + 100, 
-					gaugeBorder);
-			canvas.drawLine(0, center_y, 5, center_y, gaugeBorder);
-			canvas.drawLine(getWidth() - 5 - 1, center_y, getWidth() - 1, center_y, gaugeBorder);
 
-			bottom = center_y;
+			int leftSideOfRightGauge = getWidth() - 5 - 1;
+			int rightSideOfRightGauge = getWidth() - 1;
+			int topOfGauge = center_y - 100;
+			int bottomOfGauge = center_y + 100;
+
+			drawGauge(canvas, leftSideOfRightGauge, rightSideOfRightGauge, topOfGauge, bottomOfGauge);
+			drawGauge(canvas, 0, 5, topOfGauge, bottomOfGauge);
+
 			// Simple gauge
 //			top = center_y - (100 * speedLeft);
 //			canvas.drawRect(0, top, 5, bottom, paint);
@@ -271,33 +256,52 @@ public class DriveActivity extends Activity {
 			Paint black = new Paint();
 			black.setColor(Color.BLACK);
 			
-			top = center_y - (100 * speedLeft);
+			// Show speed indicators for the left and right motors
+			float top = center_y - (100 * speedLeft);
 			if (speedLeft == 0) {
-			  canvas.drawRect(1, center_y + 100, 5, center_y + 1, black);
-			  canvas.drawRect(1, center_y - 100 + 1, 5, center_y, black);				
+			  canvas.drawRect(1, bottomOfGauge, 5, center_y + 1, black);
+			  canvas.drawRect(1, topOfGauge + 1, 5, center_y, black);				
 			} else if (speedLeft > 0) {
-			  canvas.drawRect(1, center_y - 100 + 1, 5, top + 1, black);
-			  canvas.drawRect(1, center_y + 100, 5, center_y + 1, black);
+			  canvas.drawRect(1, topOfGauge + 1, 5, top + 1, black);
+			  canvas.drawRect(1, bottomOfGauge, 5, center_y + 1, black);
 			} else {
-			  canvas.drawRect(1, center_y + 100, 5, top + 1, black);
-			  canvas.drawRect(1, center_y - 100 + 1, 5, center_y, black);
+			  canvas.drawRect(1, bottomOfGauge, 5, top + 1, black);
+			  canvas.drawRect(1, topOfGauge + 1, 5, center_y, black);
 			}
-
 			
 			// Right motor gauge.  Paint black over the part we don't want to show.
 			top = center_y - (100 * speedRight);
 			if (speedRight == 0) {
-			  canvas.drawRect(getWidth() - 5 - 1 + 1, center_y + 100, getWidth() - 1, center_y + 1, black);
-			  canvas.drawRect(getWidth() - 5 - 1 + 1, center_y - 100 + 1, getWidth() - 1, center_y, black);				
+			  canvas.drawRect(leftSideOfRightGauge + 1, bottomOfGauge, rightSideOfRightGauge, center_y + 1, black);
+			  canvas.drawRect(leftSideOfRightGauge + 1, topOfGauge + 1, rightSideOfRightGauge, center_y, black);				
 			} else if (speedRight > 0) {
-			  canvas.drawRect(getWidth() - 5 - 1 + 1, center_y - 100 + 1, getWidth() - 1, top + 1, black);
-			  canvas.drawRect(getWidth() - 5 - 1 + 1, center_y + 100, getWidth() - 1, center_y + 1, black);
+			  canvas.drawRect(leftSideOfRightGauge + 1, topOfGauge + 1, rightSideOfRightGauge, top + 1, black);
+			  canvas.drawRect(leftSideOfRightGauge + 1, bottomOfGauge, rightSideOfRightGauge, center_y + 1, black);
 			} else {
-			  canvas.drawRect(getWidth() - 5 - 1 + 1, center_y + 100, getWidth() - 1, top + 1, black);
-			  canvas.drawRect(getWidth() - 5 - 1 + 1, center_y - 100 + 1, getWidth() - 1, center_y, black);
+			  canvas.drawRect(leftSideOfRightGauge + 1, bottomOfGauge, rightSideOfRightGauge, top + 1, black);
+			  canvas.drawRect(leftSideOfRightGauge + 1, topOfGauge + 1, rightSideOfRightGauge, center_y, black);
 			}
 			
 			canvas.drawBitmap(droid, translate, null);
+		}
+
+		private void drawGauge(Canvas canvas, int leftSide, int rightSide, int top, int bottom) {
+			int gaugeWidth = 5;
+
+			Paint gaugeTopGradient = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+			gaugeTopGradient.setColor(0xff800000);
+			
+			gaugeTopGradient.setShader(new LinearGradient(0, center_y, gaugeWidth, top, Color.GREEN, Color.RED, Shader.TileMode.CLAMP));
+			canvas.drawRect(leftSide, top, rightSide, center_y, gaugeTopGradient);
+			
+			gaugeTopGradient.setShader(new LinearGradient(0, bottom, gaugeWidth, center_y, Color.RED, Color.GREEN, Shader.TileMode.CLAMP));
+			canvas.drawRect(leftSide, bottom, rightSide, center_y, gaugeTopGradient);
+			
+			Paint gaugeBorder = new Paint();
+			gaugeBorder.setColor(Color.LTGRAY);
+			gaugeBorder.setStyle(Paint.Style.STROKE);
+			canvas.drawRect(leftSide, top, rightSide, bottom, gaugeBorder);
+			canvas.drawLine(leftSide, center_y, rightSide, center_y, gaugeBorder);
 		}
 
 		private void newCalculateVelocityVector(float x, float y) {
